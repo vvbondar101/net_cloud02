@@ -13,7 +13,7 @@ resource "yandex_compute_instance_group" "ig-1" {
   folder_id           = var.folder_id
   service_account_id  = "${yandex_iam_service_account.sa.id}"
   deletion_protection = false
-  depends_on          = [yandex_resourcemanager_folder_iam_member.editor]
+  depends_on          = [yandex_resourcemanager_folder_iam_member.editor, yandex_storage_object.test-object]
   instance_template {
     platform_id = "standard-v1"
     resources {
@@ -40,7 +40,7 @@ resource "yandex_compute_instance_group" "ig-1" {
     metadata = {
       serial-port-enable = var.metadata.serial-port-enable
       ssh-keys           = "ubuntu:${var.metadata.ssh-keys}"
-      user-data = "#cloud-config\nruncmd:\n - echo '<html><h1>TestWEB01</h1></html>' > /var/www/html/index.html"
+      user-data = "#cloud-config\nruncmd:\n - echo '<html><h1>TestWEB01</h1> <p>https://${yandex_storage_bucket.test.bucket}.storage.yandexcloud.net/${yandex_storage_object.test-object.key}</p></html>' > /var/www/html/index.html"
    }
   }
 
