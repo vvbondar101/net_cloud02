@@ -46,7 +46,7 @@ resource "yandex_compute_instance_group" "ig-1" {
 
   scale_policy {
     fixed_scale {
-      size = 2
+      size = 3
     }
   }
 
