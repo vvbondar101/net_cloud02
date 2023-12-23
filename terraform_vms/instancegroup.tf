@@ -40,7 +40,7 @@ resource "yandex_compute_instance_group" "ig-1" {
     metadata = {
       serial-port-enable = var.metadata.serial-port-enable
       ssh-keys           = "ubuntu:${var.metadata.ssh-keys}"
-      user-data = "#cloud-config\nruncmd:\n - echo '<html><h1>TestWEB01</h1> <p>https://${yandex_storage_bucket.test.bucket}.storage.yandexcloud.net/${yandex_storage_object.test-object.key}</p></html>' > /var/www/html/index.html"
+      user-data = "#cloud-config\nruncmd:\n - echo '<html><h1>TestWEB01</h1> <p>https://${yandex_storage_bucket.test.bucket}.storage.yandexcloud.net/${yandex_storage_object.test-object.key}</p>/html>' > /var/www/html/index.html"
    }
   }
 
@@ -58,5 +58,13 @@ resource "yandex_compute_instance_group" "ig-1" {
     max_unavailable = 1
     max_expansion   = 0
   }
+  application_load_balancer {
+    target_group_name        = "target-group"
+    target_group_description = "load balancer target group"
+  }
+  # load_balancer {
+  #   target_group_name        = "target-group"
+  #   target_group_description = "load balancer target group"
+  # }
 }
 
